@@ -29,7 +29,7 @@ pal = colorBin("Blues",
                bins = Ill_bins,
                pretty = TRUE)
 #define labels
-Ill_labels = sprintf("%s: %s", Illinois_map$COUNTY_NAM, prettyNum(Ill_var, big.mark = ",")) %>%
+Ill_labels = sprintf("Under 5 Population <br/><strong>%s</strong>:%s", Illinois_map$COUNTY_NAM, prettyNum(Ill_var, big.mark = ",")) %>%
   lapply(htmltools::HTML)
 Ill_labelOpts = labelOptions(style = list("font-weight" = "normal", padding = "3px 8px"),
                              textsize = "15px",
