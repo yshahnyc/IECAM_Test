@@ -1,15 +1,14 @@
 #Load libraries
 library(tidyverse)
 library(leaflet)
-library(maps)
 library(rgdal)
 library(BAMMtools)
 
-#Prepare data (from IECAM in this case)
+#Prepare data
+#Load IECAM Data
 demodata_raw = read.csv("iecamdata.csv")
 demodata_raw$Counties = str_to_upper(demodata_raw$Counties)
 
-#Upload shapefile
 Illinois_map = readOGR("Shapefile/IL_BNDY_County_Py.shp")
 Merge_CountyPop = subset(merge(Illinois_map@data, 
                                demodata_raw, 
@@ -19,8 +18,8 @@ Merge_CountyPop = subset(merge(Illinois_map@data,
                                sort = FALSE))
 Illinois_map@data = Merge_CountyPop
 
-#define which variable you want to map
-Ill_var = Illinois_map$total
+#Here define which variable you want to map
+Ill_var = Illinois_map$X5.years.and.under
 
 #define bins for colour palette
 Ill_bins = getJenksBreaks(Ill_var, 9, subset = NULL)
@@ -53,6 +52,9 @@ viewmap = leaflet(data = Illinois_map) %>%
               highlightOptions = Ill_highlights,
               label = Ill_labels,
               labelOptions = Ill_labelOpts) %>%
+  addLegend(pal = pal, values = ~Ill_var, opacity = 0.7, title = NULL,
+            position = "bottomright") %>%
   setMaxBounds(-91.51352, 36.96997, -87.49521, 42.50835)
 
 viewmap
+
